@@ -1,6 +1,6 @@
-(defproject pertamax "0.1.0"
-  :description "FIXME: write description"
+(defproject zenedu/pertamax "0.1.0"
+  :description "Functions to test math/physics/chem problems"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
+            :url "https://github.com/squest"}
   :dependencies [[org.clojure/clojure "1.7.0"]])
