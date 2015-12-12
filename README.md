@@ -1,10 +1,13 @@
-# pertamax
+# Pertamax
 
-A Clojure library designed to ... well, that part is up to you.
+Clojure's library to test functions created for solving A-level Math/Physics/Chemistry  
 
 ## Usage
 
-FIXME
+## Status
+
+![alt tag](https://circleci.com/gh/squest/pertamax.svg?style=shield&circle-token=:circle-token)
+[![Circle CI](https://circleci.com/gh/squest/pertamax/tree/master.svg?style=svg)](https://circleci.com/gh/squest/pertamax/tree/master)  
 
 ## License
 
