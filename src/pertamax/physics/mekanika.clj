@@ -1,6 +1,7 @@
 (ns pertamax.physics.mekanika
   (:require
-    [pertamax.utils :refer :all]))
+    [pertamax.utils :refer :all]
+    [gorilla-plot.core :as plot]))
 
 (def g -9.8)
 
@@ -30,34 +31,36 @@
 
 (def test-2
   (mapv #(zipmap [:m :ms :mk :f :teta] %)
-        [[10 0.3 0.2 5 30] [20 0.3 0.2 50 60]
-         [10 0.3 0.2 50 10] [20 0.3 0.2 150 20]]))
+        [[10 0.3 0.2 5 30] [20 0.35 0.2 50 60]
+         [10 0.2 0.1 50 10] [10 0.5 0.3 150 20]]))
 
-(def my-funs
-  [mekanika-1 mekanika-2])
+(defn my-funs []
+  [mekanika-1 mekanika-2 mekanika-1 mekanika-2])
 
-(def keterangans
-  ["mekanika-1" "mekanika-2"])
+(defn keterangans []
+  ["mekanika-1" "mekanika-2" "mekanika-3" "mekanika-4"])
 
-(def test-data
-  [test-1 test-2])
+(defn test-data []
+  [test-1 test-2 test-1 test-2])
 
 (defn mekanika-test
   [fn-list]
-  (let [score (atom 0)
-        total (atom 0)]
+  (let [score (atom (vec (repeat (count fn-list) 0)))
+        total (atom (vec (repeat (count fn-list) 0)))]
     (doseq [i (range (count fn-list))]
-      (println "Testing " (nth keterangans i))
-      (doseq [data (nth test-data i)]
+      (println "Testing " (nth (keterangans) i))
+      (doseq [data (nth (test-data) i)]
         (let [ress ((nth fn-list i) data)
-              resi ((nth my-funs i) data)]
+              resi ((nth (my-funs) i) data)]
           (if (not= ress resi)
-            (do (println (nth keterangans i) " salah")
+            (do (println (nth (keterangans) i) " salah")
                 (println "Seharusnya" (str resi) "Jawaban lo:" (str ress))
-                (swap! total inc))
-            (do (println (nth keterangans i) "Bener!")
-                (swap! total inc)
-                (swap! score inc))))))
-    (println "SCORE :" @score "dari total score yang mungkin" @total)
-    (println "Which means elo dapet" (int (* 100 (/ @score @total))) "%")))
+                (reset! total (update-in @total [i] inc)))
+            (do (println (nth (keterangans) i) "Bener!")
+                (reset! total (update-in @total [i] inc))
+                (reset! score (update-in @score [i] inc)))))))
+    (let [scr (reduce + @score) ttl (reduce + @total)]
+      (println "SCORE :" scr "dari total score yang mungkin" ttl)
+      (println "Which means elo dapet" (int (* 100 (/ scr ttl))) "%"))
+    (plot/bar-chart (keterangans) (mapv #(* 100.0 (/ % %2)) @score @total))))
 
