@@ -1,7 +1,6 @@
 (ns pertamax.physics.mekanika
   (:require
-    [pertamax.utils :refer :all]
-    [gorilla-plot.core :as plot]))
+    [pertamax.utils :refer :all]))
 
 (def g -9.8)
 
@@ -61,6 +60,5 @@
                 (reset! score (update-in @score [i] inc)))))))
     (let [scr (reduce + @score) ttl (reduce + @total)]
       (println "SCORE :" scr "dari total score yang mungkin" ttl)
-      (println "Which means elo dapet" (int (* 100 (/ scr ttl))) "%"))
-    (plot/bar-chart (keterangans) (mapv #(* 100.0 (/ % %2)) @score @total))))
+      (println "Which means elo dapet" (int (* 100 (/ scr ttl))) "%"))))
 
