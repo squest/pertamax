@@ -7,10 +7,11 @@
 (defn mekanika-1
   "Given m, miu-s, miu-k, and F returns [nilai-gaya-gesek :statis/kinetik]"
   [{:keys [m ms mk f]}]
-  (let [fs-max (* m (- g) ms)]
+  (let [N (- (* m g))
+        fs-max (* N ms)]
     (if (> f fs-max)
-      [(bulet (- (* m (- g) mk))) :kinetik]
-      [(bulet (- fs-max)) :statis])))
+      [(bulet (* m (- g) mk)) :kinetik]
+      [(bulet fs-max) :statis])))
 
 (def test-1
   (mapv #(zipmap [:m :ms :mk :f] %)
@@ -20,7 +21,7 @@
 (defn mekanika-2
   "Given m, miu-s, miu-k, F, and teta returns [nilai-gaya-gesek :statis/kinetik]"
   [{:keys [m ms mk f teta]}]
-  (let [N (- (* m (- g)) (* f (sin teta)))
+  (let [N (- (* m g) (* f (sin teta)))
         fx (* f (cos teta))
         fs-max (* N ms)]
     (if (> fx fs-max)
