@@ -1,64 +1,66 @@
 (ns pertamax.physics.mekanika
   (:require
-    [pertamax.utils :refer :all]))
+    [pertamax.utils :refer :all]
+    [gorilla-plot.core :refer [bar-chart]]))
 
 (def g -9.8)
 
 (defn mekanika-1
-  "Given m, miu-s, miu-k, and F returns [nilai-gaya-gesek :statis/kinetik]"
-  [{:keys [m ms mk f]}]
-  (let [N (- (* m g))
+  [{:keys [m ms mk f alfa teta]
+    :or {alfa 0 teta 0}}]
+  (let [tets (- alfa teta)
+        w (* m g)
+        wke-bidang (* w (cos teta))
+        wke-datar (* w (sin teta))
+        fy (* f (sin tets))
+        tekan (+ wke-bidang fy)
+        fx (* f (cos tets))
+        N (- tekan)
         fs-max (* N ms)]
-    (if (> f fs-max)
-      [(bulet (* m (- g) mk)) :kinetik]
-      [(bulet fs-max) :statis])))
+    (if (>= (abs fx) (abs fs-max))
+      [(abs fx) :statis]
+      [(abs (* N mk)) :kinetik])))
+
+(def keys-1 [:m :ms :mk :f :alfa :teta])
 
 (def test-1
-  (mapv #(zipmap [:m :ms :mk :f] %)
-        [[10 0.3 0.2 5] [20 0.3 0.2 50]
-         [10 0.3 0.2 50] [20 0.1 0.05 5]]))
+  (mapv #(zipmap keys-1 %)
+        [[50 0.3 0.2 50 0 0]
+         [150 0.3 0.2 50 0 0]
+         [20 0.3 0.1 450 0 30]
+         [30 0.2 0.15 250 50 20]
+         [56 0.3 0.2 50 30 210]
+         [93 0.3 0.2 500 30 60]
+         [245 0.3 0.2 250 -90 90]
+         [5 0.1 0.05 150 90 -10]]))
 
-(defn mekanika-2
-  "Given m, miu-s, miu-k, F, and teta returns [nilai-gaya-gesek :statis/kinetik]"
-  [{:keys [m ms mk f teta]}]
-  (let [N (- (* m g) (* f (sin teta)))
-        fx (* f (cos teta))
-        fs-max (* N ms)]
-    (if (> fx fs-max)
-      [(bulet (- (* N mk))) :kinetik]
-      [(bulet (- fs-max)) :statis])))
+(def my-funs
+  [mekanika-1])
 
-(def test-2
-  (mapv #(zipmap [:m :ms :mk :f :teta] %)
-        [[10 0.3 0.2 5 30] [20 0.35 0.2 50 60]
-         [10 0.2 0.1 50 10] [10 0.5 0.3 150 20]]))
+(def keterangans
+  ["mekanika-1"])
 
-(defn my-funs []
-  [mekanika-1 mekanika-2 mekanika-1 mekanika-2])
-
-(defn keterangans []
-  ["mekanika-1" "mekanika-2" "mekanika-3" "mekanika-4"])
-
-(defn test-data []
-  [test-1 test-2 test-1 test-2])
+(def test-data
+  [test-1])
 
 (defn mekanika-test
   [fn-list]
   (let [score (atom (vec (repeat (count fn-list) 0)))
         total (atom (vec (repeat (count fn-list) 0)))]
     (doseq [i (range (count fn-list))]
-      (println "Testing " (nth (keterangans) i))
-      (doseq [data (nth (test-data) i)]
+      (println "Testing " (nth keterangans i))
+      (doseq [data (nth test-data i)]
         (let [ress ((nth fn-list i) data)
-              resi ((nth (my-funs) i) data)]
+              resi ((nth my-funs i) data)]
           (if (not= ress resi)
-            (do (println (nth (keterangans) i) " salah")
+            (do (println (nth keterangans i) " salah")
                 (println "Seharusnya" (str resi) "Jawaban lo:" (str ress))
                 (reset! total (update-in @total [i] inc)))
-            (do (println (nth (keterangans) i) "Bener!")
+            (do (println (nth keterangans i) "Bener!")
                 (reset! total (update-in @total [i] inc))
                 (reset! score (update-in @score [i] inc)))))))
     (let [scr (reduce + @score) ttl (reduce + @total)]
       (println "SCORE :" scr "dari total score yang mungkin" ttl)
-      (println "Which means elo dapet" (int (* 100 (/ scr ttl))) "%"))))
+      (println "Which means elo dapet" (int (* 100 (/ scr ttl))) "%"))
+    (bar-chart keterangans (mapv #(* 100 (/ % %2)) @score @total))))
 
