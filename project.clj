@@ -1,8 +1,8 @@
-(defproject zenedu/pertamax "0.1.0"
+(defproject zenedu/pertamax "0.1.1"
   :description "Functions to test math/physics/chem problems"
-  :url "http://example.com/FIXME"
+  :url "https://github.com/squest"
   :license {:name "Eclipse Public License"
-            :url "https://github.com/squest"}
+            :url  "https://github.com/squest"}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [com.taoensso/timbre "4.1.4"]
                  [gorilla-plot "0.1.3"]]
