@@ -4,6 +4,8 @@ Clojure's library to test functions created for solving A-level Math/Physics/Che
 
 ## Usage
 
+[![Clojars Project](http://clojars.org/zenedu/pertamax/latest-version.svg)](http://clojars.org/zenedu/pertamax)
+
 ## Status
 
 ![alt tag](https://circleci.com/gh/squest/pertamax.svg?style=shield&circle-token=:circle-token)
