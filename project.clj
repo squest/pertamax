@@ -1,4 +1,4 @@
-(defproject zenedu/pertamax "0.1.7"
+(defproject zenedu/pertamax "0.1.8"
   :description "Functions to test math/physics/chem problems"
   :url "https://github.com/squest"
   :license {:name "Eclipse Public License"
