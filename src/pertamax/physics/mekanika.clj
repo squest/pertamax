@@ -10,34 +10,34 @@
     :or {alfa 0 teta 0}
     :as data}]
   (let [tets (let [res (- alfa teta)]
-               (println "tets" res)
+               (println "tets" (bulet res))
                res)
         w (let [res (* m g)]
-            (println "w" res)
+            (println "w" (bulet res))
             res)
         wke-bidang (let [res (* w (cos teta))]
-                     (println "wke-bidang" res)
+                     (println "wke-bidang" (bulet res))
                      res)
         wke-datar (let [res (* w (sin teta))]
-                    (println "wke-datar" res)
+                    (println "wke-datar" (bulet res))
                     res)
         fke-bidang (let [res (* f (sin tets))]
-                     (println "fke-bidang" res)
+                     (println "fke-bidang" (bulet res))
                      res)
         tekan (let [res (+ wke-bidang fke-bidang)]
                 (println "tekan" res)
                 res)
         fke-datar (let [res (* f (cos tets))]
-                    (println "fke-datar" res)
+                    (println "fke-datar" (bulet res))
                     res)
         N (let [res (- tekan)]
-            (println "N" res)
+            (println "N" (bulet res))
             res)
         fs-max (let [res (* N ms)]
-                 (println "fs-max" res)
+                 (println "fs-max" (bulet res))
                  res)
         ftot (let [res (+ fke-datar wke-datar)]
-               (println "sigma-f-datar" res)
+               (println "sigma-f-datar" (bulet res))
                res)]
     (println data)
     (if (>= (abs ftot) (abs fs-max))
@@ -58,8 +58,16 @@
          [30 0.2 0.15 250 -50 20]
          [56 0.3 0.2 50 130 210]
          [93 0.6 0.25 320 30 60]
+         [93 0.6 0.25 320 30 60]
          [245 0.3 0.2 250 -90 90]
          [50 0.1 0.05 150 90 10]
+         [30 0.2 0.15 250 -50 20]
+         [56 0.3 0.2 50 30 210]
+         [93 0.3 0.2 500 30 60]
+         [24 0.3 0.2 25 -30 30]
+         [5 0.1 0.05 150 90 10]
+         [245 0.3 0.2 250 -90 90]
+         [67 0.1 0.05 150 210 50]
          [30 0.2 0.15 250 -50 20]
          [56 0.3 0.2 50 30 210]
          [93 0.3 0.2 500 30 60]
@@ -95,4 +103,22 @@
       (println "SCORE :" scr "dari total score yang mungkin" ttl)
       (println "Which means elo dapet" (int (* 100 (/ scr ttl))) "%"))
     (bar-chart keterangans (mapv #(* 100 (/ % %2)) @score @total))))
+
+(defn ukhtimate-phy
+  [{:keys [f m ms mk teta alfa] :or {teta 0 alfa 0}}]
+  (let [fx (* f (cos alfa))
+        fy (* f (sin alfa))
+        wx (* m g (sin teta))
+        wy (* m g (cos teta))
+        n (- (+ wy fy))
+        forcex (+ fx wx)
+        forcedown (+ wx fy)
+        fric-s (lawan forcex (* n ms))
+        fric-k (lawan forcex (* n mk))]
+    (cond (neg? n) "up up and away"
+          (= (abs teta) 90) (if (> (abs forcedown) (abs (* fx ms)))
+                              [(bulet (abs (* fx mk))) :kinetik]
+                              [(bulet (abs forcedown)) :statis])
+          (> (abs forcex) (abs fric-s)) [(bulet (abs fric-k)) :kinetik]
+          :else [(bulet (abs forcex)) :statis])))
 
