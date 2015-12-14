@@ -16,9 +16,10 @@
         tekan (+ wke-bidang fy)
         fx (* f (cos tets))
         N (- tekan)
-        fs-max (* N ms)]
-    (if (>= (abs fx) (abs fs-max))
-      [(bulet (abs fx)) :statis]
+        fs-max (* N ms)
+        ftot (+ fx wke-datar)]
+    (if (>= (abs ftot) (abs fs-max))
+      [(bulet (abs ftot)) :statis]
       [(bulet (abs (* N mk))) :kinetik])))
 
 (def keys-1 [:m :ms :mk :f :alfa :teta])
