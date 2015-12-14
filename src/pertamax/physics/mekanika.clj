@@ -25,7 +25,7 @@
                      (println "fke-bidang" (bulet res))
                      res)
         tekan (let [res (+ wke-bidang fke-bidang)]
-                (println "tekan" res)
+                (println "f-kontak" res)
                 res)
         fke-datar (let [res (* f (cos tets))]
                     (println "fke-datar" (bulet res))
@@ -40,8 +40,12 @@
                (println "sigma-f-datar" (bulet res))
                res)]
     (println data)
-    (if (>= (abs ftot) (abs fs-max))
+    (cond
+      (<= N 0)
+      [0.0 :fly-high]
+      (>= (abs ftot) (abs fs-max))
       [(bulet (abs (* N mk))) :kinetik]
+      :else
       [(bulet (abs ftot)) :statis])))
 
 (def keys-1 [:m :ms :mk :f :alfa :teta])
