@@ -104,21 +104,21 @@
       (println "Which means elo dapet" (int (* 100 (/ scr ttl))) "%"))
     (bar-chart keterangans (mapv #(* 100 (/ % %2)) @score @total))))
 
-(defn ukhtimate-phy
-  [{:keys [f m ms mk teta alfa] :or {teta 0 alfa 0}}]
-  (let [fx (* f (cos alfa))
-        fy (* f (sin alfa))
-        wx (* m g (sin teta))
-        wy (* m g (cos teta))
-        n (- (+ wy fy))
-        forcex (+ fx wx)
-        forcedown (+ wx fy)
-        fric-s (lawan forcex (* n ms))
-        fric-k (lawan forcex (* n mk))]
-    (cond (neg? n) "up up and away"
-          (= (abs teta) 90) (if (> (abs forcedown) (abs (* fx ms)))
-                              [(bulet (abs (* fx mk))) :kinetik]
-                              [(bulet (abs forcedown)) :statis])
-          (> (abs forcex) (abs fric-s)) [(bulet (abs fric-k)) :kinetik]
-          :else [(bulet (abs forcex)) :statis])))
+#_(defn ukhtimate-phy
+    [{:keys [f m ms mk teta alfa] :or {teta 0 alfa 0}}]
+    (let [fx (* f (cos alfa))
+          fy (* f (sin alfa))
+          wx (* m g (sin teta))
+          wy (* m g (cos teta))
+          n (- (+ wy fy))
+          forcex (+ fx wx)
+          forcedown (+ wx fy)
+          fric-s (lawan forcex (* n ms))
+          fric-k (lawan forcex (* n mk))]
+      (cond (neg? n) "up up and away"
+            (= (abs teta) 90) (if (> (abs forcedown) (abs (* fx ms)))
+                                [(bulet (abs (* fx mk))) :kinetik]
+                                [(bulet (abs forcedown)) :statis])
+            (> (abs forcex) (abs fric-s)) [(bulet (abs fric-k)) :kinetik]
+            :else [(bulet (abs forcex)) :statis])))
 
