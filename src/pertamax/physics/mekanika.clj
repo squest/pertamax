@@ -7,20 +7,42 @@
 
 (defn mekanika-1
   [{:keys [m ms mk f alfa teta]
-    :or {alfa 0 teta 0}}]
-  (let [tets (- alfa teta)
-        w (* m g)
-        wke-bidang (* w (cos teta))
-        wke-datar (* w (sin teta))
-        fy (* f (sin tets))
-        tekan (+ wke-bidang fy)
-        fx (* f (cos tets))
-        N (- tekan)
-        fs-max (* N ms)
-        ftot (+ fx wke-datar)]
+    :or {alfa 0 teta 0}
+    :as data}]
+  (let [tets (let [res (- alfa teta)]
+               (println "tets" res)
+               res)
+        w (let [res (* m g)]
+            (println "w" res)
+            res)
+        wke-bidang (let [res (* w (cos teta))]
+                     (println "wke-bidang" res)
+                     res)
+        wke-datar (let [res (* w (sin teta))]
+                    (println "wke-datar" res)
+                    res)
+        fke-bidang (let [res (* f (sin tets))]
+                     (println "fke-bidang" res)
+                     res)
+        tekan (let [res (+ wke-bidang fke-bidang)]
+                (println "tekan" res)
+                res)
+        fke-datar (let [res (* f (cos tets))]
+                    (println "fke-datar" res)
+                    res)
+        N (let [res (- tekan)]
+            (println "N" res)
+            res)
+        fs-max (let [res (* N ms)]
+                 (println "fs-max" res)
+                 res)
+        ftot (let [res (+ fke-datar wke-datar)]
+               (println "sigma-f-datar" res)
+               res)]
+    (println data)
     (if (>= (abs ftot) (abs fs-max))
-      [(bulet (abs ftot)) :statis]
-      [(bulet (abs (* N mk))) :kinetik])))
+      [(bulet (abs (* N mk))) :kinetik]
+      [(bulet (abs ftot)) :statis])))
 
 (def keys-1 [:m :ms :mk :f :alfa :teta])
 
