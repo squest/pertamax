@@ -10,6 +10,14 @@
           n (read-string a)]
       (+ n (read-string (str "0." (apply str (take 5 b))))))))
 
+(defn f=
+  [a b]
+  (<= -0.001 (- a b) 0.001))
+
+(defn rand-range
+  ([i j] (rand-nth (range i (inc j))))
+  ([i j step] (rand-nth (range i (inc j) step))))
+
 (defn sqrt [x] (Math/sqrt x))
 (defn abs [x] (Math/abs x))
 (defn ->rad [x] (Math/toRadians x))
