@@ -72,4 +72,5 @@
     (println "Your score : ")
     (println "Bener :" @bener)
     (println "Salah :" @salah)
-    (println "Score :" (* 100.0 (/ @bener (count data))) "%")))
+    (println "Score :" (* 100.0 (/ @bener (count data))) "%")
+    (* 100.0 (/ @bener (count data)))))
