@@ -36,6 +36,25 @@
                        :c (/ (+ (* m c) (* mr cr)) (+ m mr))})))
         [(get res :t)]))))
 
+(defn kalor-3
+  "Soal : given two entities with m,c1,c2,c3,L,U,t,tl,tu.
+  Where L = kalor lebur, U = Kalor uap, t = temperatur, tl = titik lebur, tu = titik uap"
+  [b1 b2]
+  (let [[m1 c11 c12 c13 L1 U1 t1 tl1 tu1 :as mb1]
+        (mapv #(get b1 %) [:m :c1 :c2 :c3 :L :U :t :tl :tu])
+        [m2 c21 c22 c23 L2 U2 t2 tl2 tu2 :as mb2]
+        (mapv #(get b2 %) [:m :c1 :c2 :c3 :L :U :t :tl :tu])
+        ft (fn [t tl tu]
+             (cond (< t tl) 0
+                   (== t tl) 1
+                   (< tl t tu) 2
+                   (== t tu) 3
+                   (> t tu) 4))
+        which-f (fn [{:keys [m c1 c2 c3 L U t tl tu]}]
+                  (-> {0 c1 1 L 2 c2 3 U 4 c3}
+                      (get (ft t tl tu))))]
+    ))
+
 (def data-kalor-1
   (for [i (range 5)]
     [(rand-range 1 5 0.7)
