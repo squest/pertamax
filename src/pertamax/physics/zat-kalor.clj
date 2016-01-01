@@ -75,5 +75,3 @@
        {:m (rand-range 2 8 0.15)
         :c (rand-range 1 3 0.2)
         :t (rand-range -20 30 4)})]))
-
-
