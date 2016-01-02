@@ -2,7 +2,7 @@
   (:require
     [pertamax.utils :refer :all]
     [clojure.test :refer :all]
-    [pertamax.physics.termo :refer :all]
+    [pertamax.physics.zat-kalor :refer :all]
     [taoensso.timbre :as log]))
 
 (deftest kalor
