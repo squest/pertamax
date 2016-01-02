@@ -1,4 +1,4 @@
-(ns pertamax.test.physics-termo
+(ns pertamax.test.physics-zat-kalor
   (:require
     [pertamax.utils :refer :all]
     [clojure.test :refer :all]
